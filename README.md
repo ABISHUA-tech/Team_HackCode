@@ -1,17 +1,23 @@
-# 🏙️ Crowdsourced Civic Issue Reporting & Resolution System
+# Civic Reporting — Demo (Parul University)
 
-A web-based platform to empower citizens to **report civic issues** (potholes, street lights, garbage, water/drainage, encroachment, etc.) with photos, GPS, and descriptions.  
-The system routes complaints to the right departments, provides live tracking, and ensures **accountability & transparency**.
+A compact, Wikipedia-like web UI for **Crowdsourced Civic Issue Reporting & Resolution** (demo).
+Built for Vadodara Hackathon 6.0 by **Team HackCode**.
 
-> 🚀 Built for **Vadodara Hackathon 6.0** @ **Parul University**  
-> ❤️ Made with love by **Team HackCode**
+## Features (compact)
+- Report civic issues (pothole, lights, garbage, water, encroachment).
+- Track by Issue ID & phone.
+- Live map centered on **Parul University, Vadodara** (Leaflet + OSM).
+- CivicBot — quick feature explainer.
+- Small impact snapshot chart (QuickChart).
 
----
+## Run locally
+1. Clone or download files.
+2. Open `index.html` in a browser (no server required).
+3. For hosting, push to GitHub and enable Pages.
 
-## 🌐 Live Demo
-👉 [View on GitHub Pages](https://yourusername.github.io/your-repo-name)
+## Notes
+- This is a **demo** (in-browser, client-side). No backend.
+- Reports stored in-memory for the session (not persistent).
+- Replace imagery & APIs for production (Google Maps, auth, DB).
 
----
-
-## ✨ Features
-- **Citizen Reporting**
+Made with ❤️ by **Team HackCode** — Vadodara Hackathon 6.0, Parul University
