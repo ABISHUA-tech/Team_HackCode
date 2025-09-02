@@ -4,10 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Crowdsourced Civic Issue Reporting | Vadodara Hackathon 6.0</title>
-  <meta name="description" content="Hackathon project — Crowdsourced Civic Issue Reporting and Resolution System by Team HackCode." />
   <link rel="stylesheet" href="style.css">
-
-  <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
@@ -23,7 +20,8 @@
       <a href="#features">Features</a>
       <a href="#map-section">Live Map</a>
       <a href="#report">Report</a>
-      <a href="#tech">Tech</a>
+      <a href="#bot">AI Bot</a>
+      <a href="#benefits">Benefits</a>
     </nav>
   </header>
 
@@ -33,7 +31,7 @@
       <section>
         <div class="hero">
           <h1>Report Civic Issues in Seconds</h1>
-          <p class="lead">Submit photos, location, and description. Track live status and see reports on the city map.</p>
+          <p class="lead">Click, submit, and track – every report matters.</p>
 
           <div class="cards">
             <div class="card">
@@ -54,11 +52,12 @@
         <section id="features">
           <h3>Key Features</h3>
           <ul>
-            <li>Quick reporting with photo, GPS & text.</li>
-            <li>Real-time map with active reports.</li>
+            <li>One-click issue reporting with GPS & photo.</li>
+            <li>Real-time map updates with live markers.</li>
             <li>Automated routing to right department.</li>
-            <li>Analytics & heatmaps for admins.</li>
+            <li>Analytics & heatmaps for civic planning.</li>
           </ul>
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Civic Icon" class="icon-img">
         </section>
 
         <section id="report">
@@ -75,9 +74,6 @@
 
             <label>Short description</label>
             <input id="title" type="text" placeholder="e.g. Pothole near main gate" required />
-
-            <label>Details</label>
-            <textarea id="details" placeholder="Add more context or landmarks"></textarea>
 
             <label>Photo</label>
             <input type="file" id="photoInput" accept="image/*" />
@@ -101,14 +97,24 @@
       </aside>
     </div>
 
-    <section id="tech" style="margin-top:20px">
-      <h3>Tech Stack</h3>
+    <!-- AI Bot Section -->
+    <section id="bot" class="admin">
+      <h3>AI Bot – Civic Guide 🤖</h3>
+      <div id="chatbox"></div>
+      <button class="btn" onclick="botNext()">Ask Next</button>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="admin">
+      <h3>Benefits for People</h3>
       <ul>
-        <li>Frontend: HTML, CSS, JS</li>
-        <li>Map: Leaflet + OpenStreetMap</li>
-        <li>Backend (future): Node.js / Django</li>
-        <li>Mobile App: Flutter / React Native</li>
+        <li>📍 Faster issue resolution with GPS accuracy</li>
+        <li>📊 Transparent data & accountability</li>
+        <li>🗣️ Citizens feel heard, boosting civic trust</li>
+        <li>🌱 Cleaner & safer neighborhoods</li>
       </ul>
+      <img src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Potholes','Streetlights','Sanitation','Water'],datasets:[{label:'Issues Resolved (%)',data:[85,90,78,70]}]}}" 
+           alt="Graph" class="graph-img"/>
     </section>
 
     <footer>
@@ -117,7 +123,6 @@
     </footer>
   </main>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
