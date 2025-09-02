@@ -3,127 +3,181 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Crowdsourced Civic Issue Reporting | Vadodara Hackathon 6.0</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <title>Civic Reporting — Next Gen</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:," />
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo">CI</div>
-      <div>
-        <div class="title">CivicInbox</div>
-        <div class="tag">Crowdsourced Civic Issue Reporting</div>
+  <!-- Top Header (IRCTC-like) -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <img class="brand-mark" alt="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/OOjs_UI_icon_mapPin-progressive.svg"/>
+      <div class="brand">
+        <div class="brand-title">Civic Reporting</div>
+        <div class="brand-sub">Next Generation e-Reporting</div>
       </div>
     </div>
-    <nav class="nav">
-      <a href="#features">Features</a>
-      <a href="#map-section">Live Map</a>
-      <a href="#report">Report</a>
-      <a href="#bot">AI Bot</a>
-      <a href="#benefits">Benefits</a>
+    <nav class="topbar-nav">
+      <a href="#" class="navlink">Home</a>
+      <a href="#how" class="navlink">How it works</a>
+      <a href="#support" class="navlink">Support</a>
+      <button class="btn btn-outline">Login</button>
+      <button class="btn btn-primary">Register</button>
     </nav>
   </header>
 
-  <main class="container">
-    <div class="grid">
-      <!-- Left content -->
-      <section>
-        <div class="hero">
-          <h1>Report Civic Issues in Seconds</h1>
-          <p class="lead">Click, submit, and track – every report matters.</p>
+  <!-- Notice / ticker -->
+  <div class="notice">
+    <div class="notice-label">Announcements</div>
+    <marquee class="notice-text" behavior="scroll" direction="left" scrollamount="5">
+      System window for maintenance on Sunday 02:00–03:00. | Please report with clear photos for faster resolution. | Parul University pilot zones: Wards 1–7 active.
+    </marquee>
+  </div>
 
-          <div class="cards">
-            <div class="card">
-              <div class="small">Avg. SLA</div>
-              <div class="kpi">&lt; 48 hrs</div>
-            </div>
-            <div class="card">
-              <div class="small">Active Reports</div>
-              <div class="kpi" id="kpi-count">0</div>
-            </div>
-            <div class="card">
-              <div class="small">Departments</div>
-              <div class="kpi">7+</div>
-            </div>
+  <!-- Main area: Left = big search card, Right = promos (IRCTC layout vibe) -->
+  <main class="container">
+    <section class="grid">
+      <!-- Left: Search / Report card -->
+      <div class="card search-card">
+        <div class="card-head">
+          <div class="tabs">
+            <button class="tab active" data-tab="report">Report Issue</button>
+            <button class="tab" data-tab="track">Track Issue</button>
           </div>
         </div>
 
-        <section id="features">
-          <h3>Key Features</h3>
-          <ul>
-            <li>One-click issue reporting with GPS & photo.</li>
-            <li>Real-time map updates with live markers.</li>
-            <li>Automated routing to right department.</li>
-            <li>Analytics & heatmaps for civic planning.</li>
-          </ul>
-          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Civic Icon" class="icon-img">
-        </section>
-
-        <section id="report">
-          <h3>Submit an Issue</h3>
-          <form class="report" id="reportForm" onsubmit="return handleSubmit(event)">
-            <label>Issue type</label>
-            <select id="issueType">
+        <!-- Report tab -->
+        <form id="reportTab" class="form-grid tabpane active" onsubmit="return handleReport(event)">
+          <div class="form-row">
+            <label>Issue Type</label>
+            <select id="issueType" required>
+              <option value="" disabled selected>Select issue</option>
               <option>Pothole</option>
               <option>Street Light</option>
               <option>Garbage / Waste</option>
               <option>Water / Drainage</option>
+              <option>Encroachment / Block</option>
               <option>Other</option>
             </select>
+          </div>
 
-            <label>Short description</label>
-            <input id="title" type="text" placeholder="e.g. Pothole near main gate" required />
+          <div class="form-row">
+            <label>Area / Ward</label>
+            <input id="area" type="text" placeholder="e.g., Limda, Ward 5" required />
+          </div>
 
+          <div class="form-row">
+            <label>Landmark</label>
+            <input id="landmark" type="text" placeholder="Near main gate / bus stop (optional)" />
+          </div>
+
+          <div class="form-row">
+            <label>Preferred Visit Date</label>
+            <input id="date" type="date" />
+          </div>
+
+          <div class="form-row">
+            <label>Priority</label>
+            <select id="priority">
+              <option>Normal</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+          </div>
+
+          <div class="form-row">
             <label>Photo</label>
-            <input type="file" id="photoInput" accept="image/*" />
+            <input id="photo" type="file" accept="image/*" />
+          </div>
 
-            <button class="btn" type="submit">Send Report</button>
-          </form>
-        </section>
-      </section>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Find Teams</button>
+            <button class="btn btn-ghost" type="reset">Clear</button>
+          </div>
+        </form>
 
-      <!-- Right: Map & Reports -->
-      <aside id="map-section">
-        <div class="admin">
-          <h3>Live City Map</h3>
-          <div id="map">Loading map...</div>
+        <!-- Track tab -->
+        <form id="trackTab" class="form-grid tabpane" onsubmit="return handleTrack(event)">
+          <div class="form-row">
+            <label>Issue ID</label>
+            <input id="issueId" type="text" placeholder="Enter Issue ID (e.g., CIV123456)" required />
+          </div>
+          <div class="form-row">
+            <label>Phone</label>
+            <input id="phone" type="tel" placeholder="Registered phone number" required />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Check Status</button>
+          </div>
+        </form>
+
+        <!-- Search results (below the card header like IRCTC list) -->
+        <div id="results" class="results"></div>
+      </div>
+
+      <!-- Right: Promo / Hero tiles (similar to IRCTC right column) -->
+      <aside class="rightcol">
+        <div class="card promo">
+          <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=1200&auto=format&fit=crop" alt="City maintenance" />
+          <div class="promo-body">
+            <div class="promo-title">Clean City Drive</div>
+            <div class="promo-text">Join the 30-day mission to fix 1,000 civic issues.</div>
+          </div>
         </div>
 
-        <div class="admin" style="margin-top:12px">
-          <h3>Recent Reports</h3>
-          <div class="list" id="reportList"></div>
+        <div class="card promo small">
+          <img src="https://images.unsplash.com/photo-1595259680684-2532f6b0f9d3?q=80&w=1200&auto=format&fit=crop" alt="Street lights" />
+          <div class="promo-body">
+            <div class="promo-title">LED Streetlights</div>
+            <div class="promo-text">Report outages for fast turnarounds.</div>
+          </div>
+        </div>
+
+        <div class="card promo small">
+          <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop" alt="Pothole repair" />
+          <div class="promo-body">
+            <div class="promo-title">Pothole Week</div>
+            <div class="promo-text">City-wide repair blitz — log yours now.</div>
+          </div>
         </div>
       </aside>
-    </div>
-
-    <!-- AI Bot Section -->
-    <section id="bot" class="admin">
-      <h3>AI Bot – Civic Guide 🤖</h3>
-      <div id="chatbox"></div>
-      <button class="btn" onclick="botNext()">Ask Next</button>
     </section>
 
-    <!-- Benefits Section -->
-    <section id="benefits" class="admin">
-      <h3>Benefits for People</h3>
-      <ul>
-        <li>📍 Faster issue resolution with GPS accuracy</li>
-        <li>📊 Transparent data & accountability</li>
-        <li>🗣️ Citizens feel heard, boosting civic trust</li>
-        <li>🌱 Cleaner & safer neighborhoods</li>
-      </ul>
-      <img src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Potholes','Streetlights','Sanitation','Water'],datasets:[{label:'Issues Resolved (%)',data:[85,90,78,70]}]}}" 
-           alt="Graph" class="graph-img"/>
+    <!-- Info blocks (mirrors IRCTC’s clean cards under search) -->
+    <section id="how" class="info-cards">
+      <div class="card mini">
+        <div class="mini-title">Fast</div>
+        <div class="mini-text">3-step reporting. Track live status.</div>
+      </div>
+      <div class="card mini">
+        <div class="mini-title">Transparent</div>
+        <div class="mini-text">SLA timers & public dashboards.</div>
+      </div>
+      <div class="card mini">
+        <div class="mini-title">Coordinated</div>
+        <div class="mini-text">Auto-route to right department.</div>
+      </div>
+      <div class="card mini">
+        <div class="mini-title">Inclusive</div>
+        <div class="mini-text">Multi-language & mobile-friendly.</div>
+      </div>
     </section>
-
-    <footer>
-      <p><strong>Vadodara Hackathon 6.0</strong> | Parul University</p>
-      <p>Made with ❤️ by <strong>Team HackCode</strong>.</p>
-    </footer>
   </main>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Footer (simple + partner strip feel) -->
+  <footer class="footer" id="support">
+    <div class="partners">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/P_ictogram_info.svg" alt="Partner 1" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Commons-logo.svg" alt="Partner 2" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Crystal_Clear_app_ktip.svg" alt="Partner 3" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/OOjs_UI_icon_cog.svg" alt="Partner 4" />
+    </div>
+    <div class="legal">
+      <p><strong>Vadodara Hackathon 6.0</strong> • Parul University</p>
+      <p>Made with ❤️ by <strong>Team HackCode</strong>.</p>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
