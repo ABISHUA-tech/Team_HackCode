@@ -1,0 +1,48 @@
+:root {
+  --bg:#0f1724;
+  --card:#0b1220;
+  --glass: rgba(255,255,255,0.06);
+  --accent: linear-gradient(90deg,#06b6d4,#7c3aed);
+  --muted: #9aa4b2;
+  --accent-color: #38bdf8;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#e6eef8;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;background:var(--glass);display:grid;place-items:center;border-radius:12px}
+h1.site{font-size:20px;margin:0}
+p.tag{margin:0;color:var(--muted);font-size:13px}
+nav{display:flex;gap:8px}
+.btn{background:transparent;border:1px solid var(--glass);padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;border:none;box-shadow:0 8px 24px rgba(124,58,237,0.3)}
+.hero{display:grid;grid-template-columns:1fr 380px;gap:24px;margin-top:30px}
+.hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:16px;padding:22px}
+.kicker{display:inline-block;background:rgba(255,255,255,0.05);padding:6px 10px;border-radius:999px;color:var(--accent-color);font-weight:700;font-size:12px}
+h2{margin:12px 0 8px;font-size:26px}
+p.lead{color:var(--muted)}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.feature{background:var(--card);padding:14px;border-radius:12px}
+.feature h4{margin:0 0 6px;font-size:15px}
+.phone{background:linear-gradient(180deg,#071127,#0b1220);border-radius:28px;padding:16px;box-shadow:0 20px 50px rgba(2,6,23,0.6)}
+.screen{background:#071127;border-radius:16px;padding:14px}
+.report-card{background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:10px;margin-top:10px}
+.report-card h5{margin:0;font-size:14px}
+.report-card p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.card{background:var(--card);padding:16px;border-radius:12px}
+.map-placeholder{height:200px;background:linear-gradient(90deg,rgba(56,189,248,0.05),rgba(124,58,237,0.05));border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.report-form{display:flex;flex-direction:column;gap:8px}
+input,textarea,select{background:transparent;border:1px solid var(--glass);padding:10px;border-radius:8px;color:#fff}
+textarea{min-height:90px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.chip{background:rgba(255,255,255,0.08);padding:8px 12px;border-radius:999px;font-size:13px}
+footer{text-align:center;color:var(--muted);margin-top:30px;padding:20px 0;border-top:1px solid var(--glass)}
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
+  nav{flex-wrap:wrap}
+}
