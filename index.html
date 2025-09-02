@@ -11,7 +11,6 @@
     <!-- Header -->
     <header class="header">
       <div class="header-left">
-        <!-- Updated logo source -->
         <img src="https://i.ibb.co/23m226Jq/logo-hack.jpg" alt="Action 7 Logo" class="logo-sm" />
         <div>
           <div class="site-title">Action 7</div>
@@ -56,11 +55,13 @@
           <img src="https://media.istockphoto.com/id/950679732/photo/discharge-of-sewage-into-a-river.jpg?s=612x612&w=0&k=20&c=yzqTSybAHXdk4q3Z4trus97VjAmx0L8TZ9F95CscSO0=" alt="Drainage" />
           <figcaption>Water/Drainage</figcaption>
         </figure>
-        <figure class="thumb">
-          <img src="https://images.unsplash.com/photo-1744343932892-d08c6df3f7b5?q=80&w=400&auto=format&fit=crop" alt="Clean City" />
-          <figcaption>Clean City</figcaption>
-        </figure>
       </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section card">
+      <div class="panel-head">Map (Default: Parul University)</div>
+      <div id="map"></div>
     </section>
 
     <!-- Main Content -->
@@ -70,17 +71,17 @@
         <div class="card panel">
           <div class="panel-head">Report an Issue</div>
           <div class="form-compact">
-            <div class="row"><input type="text" placeholder="Enter Location" /></div>
-            <div class="row"><textarea placeholder="Describe the issue..."></textarea></div>
+            <div class="row"><input type="text" id="locationInput" placeholder="Enter Location" /></div>
+            <div class="row"><textarea id="issueDesc" placeholder="Describe the issue..."></textarea></div>
+            <div class="row"><input type="file" id="fileUpload" /></div>
             <div class="actions">
-              <button class="btn primary">Submit Report</button>
-              <button class="btn ghost">Attach Photo</button>
+              <button class="btn primary" onclick="submitReport()">Submit Report</button>
             </div>
           </div>
         </div>
         <div class="card panel">
           <div class="panel-head">Recent Reports</div>
-          <div class="compact-results">
+          <div class="compact-results" id="recentReports">
             <div class="result"><span>Pothole near Market Road</span><span class="meta">2 hrs ago</span></div>
             <div class="result"><span>Garbage not collected in Ward 5</span><span class="meta">5 hrs ago</span></div>
             <div class="result"><span>Streetlight not working - Sector 3</span><span class="meta">1 day ago</span></div>
@@ -126,6 +127,9 @@
       </div>
     </footer>
   </div>
+
+  <!-- Google Maps Script -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
   <script src="script.js"></script>
 </body>
 </html>
