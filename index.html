@@ -6,151 +6,119 @@
   <title>Crowdsourced Civic Issue Reporting | Vadodara Hackathon 6.0</title>
   <meta name="description" content="Hackathon project — Crowdsourced Civic Issue Reporting and Resolution System by Team HackCode." />
   <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12C3 7.03 7.03 3 12 3s9 4.03 9 9-4.03 9-9 9S3 16.97 3 12z" stroke="url(#g)" stroke-width="1.2"/>
-            <path d="M8.5 12.5l2 2 5-6" stroke="#fff" stroke-width="1.4"/>
-            <defs>
-              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#06b6d4"/>
-                <stop offset="1" stop-color="#7c3aed"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div>
-          <h1 class="site">CivicInbox</h1>
-          <p class="tag">Crowdsourced Civic Issue Reporting • Hackathon Project</p>
-        </div>
+  <header>
+    <div class="brand">
+      <div class="logo">CI</div>
+      <div>
+        <div class="title">CivicInbox</div>
+        <div class="tag">Crowdsourced Civic Issue Reporting</div>
       </div>
-      <nav>
-        <a href="#features" class="btn">Features</a>
-        <a href="#architecture" class="btn">Architecture</a>
-        <a href="#tech" class="btn">Tech Stack</a>
-        <a href="#form" class="btn primary">Try Demo</a>
-      </nav>
-    </header>
+    </div>
+    <nav class="nav">
+      <a href="#features">Features</a>
+      <a href="#map-section">Live Map</a>
+      <a href="#report">Report</a>
+      <a href="#tech">Tech</a>
+    </nav>
+  </header>
 
-    <main>
-      <div class="hero">
-        <div class="hero-card">
-          <span class="kicker">Vadodara Hackathon 6.0</span>
-          <h2>Empowering Citizens to Report Issues — Instantly & Transparently</h2>
-          <p class="lead">Mobile-first app for reporting potholes, broken streetlights, sanitation issues, and more — powered by real-time tracking, automated routing, and an interactive admin dashboard.</p>
+  <main class="container">
+    <div class="grid">
+      <!-- Left content -->
+      <section>
+        <div class="hero">
+          <h1>Report Civic Issues in Seconds</h1>
+          <p class="lead">Submit photos, location, and description. Track live status and see reports on the city map.</p>
 
-          <div class="feature-grid" id="features">
-            <div class="feature">
-              <h4>Mobile App for Citizens</h4>
-              <p>Report via photo, location, and voice/text. Track updates in real-time.</p>
+          <div class="cards">
+            <div class="card">
+              <div class="small">Avg. SLA</div>
+              <div class="kpi">&lt; 48 hrs</div>
             </div>
-            <div class="feature">
-              <h4>Admin Dashboard</h4>
-              <p>Interactive map, filters, automated routing & performance tracking.</p>
+            <div class="card">
+              <div class="small">Active Reports</div>
+              <div class="kpi" id="kpi-count">0</div>
             </div>
-            <div class="feature">
-              <h4>Smart Routing</h4>
-              <p>Reports auto-assigned to the right department based on type & GPS.</p>
-            </div>
-            <div class="feature">
-              <h4>Analytics & Heatmaps</h4>
-              <p>Visualize hotspots & trends for better civic planning.</p>
+            <div class="card">
+              <div class="small">Departments</div>
+              <div class="kpi">7+</div>
             </div>
           </div>
         </div>
 
-        <div class="phone" role="img">
-          <div class="screen">
-            <div class="pill">Nearby Issues</div>
-            <div class="report-card">
-              <h5>Pothole on MG Road</h5>
-              <p class="muted">2.3 km • 30m ago</p>
-            </div>
-            <div class="report-card">
-              <h5>Streetlight not working</h5>
-              <p class="muted">0.6 km • 1h ago</p>
-            </div>
-            <div class="report-card">
-              <h5>Overflowing garbage bin</h5>
-              <p class="muted">1.2 km • 2h ago</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        <section id="features">
+          <h3>Key Features</h3>
+          <ul>
+            <li>Quick reporting with photo, GPS & text.</li>
+            <li>Real-time map with active reports.</li>
+            <li>Automated routing to right department.</li>
+            <li>Analytics & heatmaps for admins.</li>
+          </ul>
+        </section>
 
-      <section id="architecture">
-        <div class="grid-3">
-          <div class="card">
-            <h3>System Architecture</h3>
-            <ul>
-              <li><strong>Mobile App</strong>: Flutter / React Native, GPS, Camera</li>
-              <li><strong>API & Routing</strong>: Node.js / Django backend</li>
-              <li><strong>Admin Portal</strong>: Web dashboard with maps</li>
-              <li><strong>Storage & Analytics</strong>: PostgreSQL, Grafana/PowerBI</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Admin Dashboard</h3>
-            <div class="map-placeholder">City Map • Heatmap Layer</div>
-          </div>
-          <div class="card">
-            <h3>Smart Features</h3>
-            <ul>
-              <li>Automated Routing</li>
-              <li>Heatmaps & Weekly Reports</li>
-              <li>Citizen–Admin Notifications</li>
-              <li>Role-Based Access Control</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="form">
-        <div class="card">
-          <h3>Report an Issue (Demo)</h3>
-          <form class="report-form" onsubmit="handleReport(event)">
-            <input id="title" placeholder="Short title (e.g. Pothole on 4th Ave)" required />
-            <select id="type">
-              <option>Choose issue type</option>
+        <section id="report">
+          <h3>Submit an Issue</h3>
+          <form class="report" id="reportForm" onsubmit="return handleSubmit(event)">
+            <label>Issue type</label>
+            <select id="issueType">
               <option>Pothole</option>
-              <option>Streetlight</option>
-              <option>Sanitation</option>
-              <option>Water leakage</option>
+              <option>Street Light</option>
+              <option>Garbage / Waste</option>
+              <option>Water / Drainage</option>
+              <option>Other</option>
             </select>
-            <textarea id="description" placeholder="Describe the issue..."></textarea>
-            <div class="row">
-              <input type="file" id="photo" accept="image/*" />
-              <button type="submit" class="btn primary">Submit (Demo)</button>
-            </div>
-            <small class="muted">Demo only — no backend connection.</small>
+
+            <label>Short description</label>
+            <input id="title" type="text" placeholder="e.g. Pothole near main gate" required />
+
+            <label>Details</label>
+            <textarea id="details" placeholder="Add more context or landmarks"></textarea>
+
+            <label>Photo</label>
+            <input type="file" id="photoInput" accept="image/*" />
+
+            <button class="btn" type="submit">Send Report</button>
           </form>
-        </div>
+        </section>
       </section>
 
-      <section id="tech">
-        <div class="card">
-          <h3>Tech Stack</h3>
-          <div class="chips">
-            <div class="chip">Flutter / React Native</div>
-            <div class="chip">Node.js / Django</div>
-            <div class="chip">PostgreSQL</div>
-            <div class="chip">AWS / GCP</div>
-            <div class="chip">Mapbox / Google Maps</div>
-            <div class="chip">Grafana / PowerBI</div>
-          </div>
+      <!-- Right: Map & Reports -->
+      <aside id="map-section">
+        <div class="admin">
+          <h3>Live City Map</h3>
+          <div id="map">Loading map...</div>
         </div>
-      </section>
-    </main>
+
+        <div class="admin" style="margin-top:12px">
+          <h3>Recent Reports</h3>
+          <div class="list" id="reportList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <section id="tech" style="margin-top:20px">
+      <h3>Tech Stack</h3>
+      <ul>
+        <li>Frontend: HTML, CSS, JS</li>
+        <li>Map: Leaflet + OpenStreetMap</li>
+        <li>Backend (future): Node.js / Django</li>
+        <li>Mobile App: Flutter / React Native</li>
+      </ul>
+    </section>
 
     <footer>
       <p><strong>Vadodara Hackathon 6.0</strong> | Parul University</p>
       <p>Made with ❤️ by <strong>Team HackCode</strong>.</p>
     </footer>
-  </div>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
