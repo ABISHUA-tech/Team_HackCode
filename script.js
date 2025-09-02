@@ -1,29 +1,60 @@
+// Chatbot simulation
 function sendMessage(event) {
   if (event.key === "Enter") {
-    let input = document.getElementById("chatInput");
-    let chatbox = document.getElementById("chatbox");
-
-    let userText = input.value.trim();
-    if (userText === "") return;
-
-    // Show user message
-    let userMsg = document.createElement("p");
-    userMsg.innerHTML = "<b>You:</b> " + userText;
-    chatbox.appendChild(userMsg);
-
-    // Simple bot response
-    let botMsg = document.createElement("p");
-    if (userText.toLowerCase().includes("report")) {
-      botMsg.innerHTML = "<b>Bot:</b> You can submit a report using the form on the left.";
-    } else if (userText.toLowerCase().includes("status")) {
-      botMsg.innerHTML = "<b>Bot:</b> Check recent reports below the form.";
-    } else {
-      botMsg.innerHTML = "<b>Bot:</b> I can help you with reporting issues, checking status, or guidance.";
+    const input = document.getElementById("chatInput");
+    const chatbox = document.getElementById("chatbox");
+    const msg = input.value.trim();
+    if (msg) {
+      chatbox.innerHTML += `<p><b>You:</b> ${msg}</p>`;
+      // Simple bot response
+      if (msg.toLowerCase().includes("report")) {
+        chatbox.innerHTML += `<p><b>Bot:</b> Click on "Report an Issue" card and fill the form to report.</p>`;
+      } else if (msg.toLowerCase().includes("update")) {
+        chatbox.innerHTML += `<p><b>Bot:</b> Check "Recent Reports" for the latest updates.</p>`;
+      } else {
+        chatbox.innerHTML += `<p><b>Bot:</b> I’m here to help you with reporting or tracking issues.</p>`;
+      }
+      chatbox.scrollTop = chatbox.scrollHeight;
+      input.value = "";
     }
-    chatbox.appendChild(botMsg);
-
-    // Auto-scroll
-    chatbox.scrollTop = chatbox.scrollHeight;
-    input.value = "";
   }
+}
+
+// File upload handling
+const fileInput = document.getElementById("fileUpload");
+const recentReports = document.getElementById("recentReports");
+
+// Mock username
+const username = "User123";
+
+if (fileInput) {
+  fileInput.addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      const fileName = this.files[0].name;
+      const now = new Date();
+      const timeAgo = "Just now";
+
+      const newReport = document.createElement("div");
+      newReport.className = "result";
+      newReport.innerHTML = `<span>${username} uploaded: ${fileName}</span><span class="meta">${timeAgo}</span>`;
+
+      recentReports.prepend(newReport);
+      alert("File uploaded successfully (demo).");
+      this.value = ""; // reset input
+    }
+  });
+}
+
+// Google Maps initialization
+function initMap() {
+  const parulUniversity = { lat: 22.2966, lng: 73.3639 };
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: parulUniversity,
+  });
+  new google.maps.Marker({
+    position: parulUniversity,
+    map: map,
+    title: "Parul University",
+  });
 }
