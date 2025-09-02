@@ -1,18 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Action 7 — Civic Reporting (Demo)</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Action 7</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
   <div class="page">
-
     <!-- Header -->
     <header class="header">
       <div class="header-left">
@@ -27,101 +24,88 @@
       </div>
     </header>
 
-    <!-- Nav -->
+    <!-- Navbar -->
     <nav class="navline">
       <div class="nav-center">
-        <input id="globalSearch" type="text" placeholder="Search issue..." />
-        <button class="btn" id="btnSearch">Search</button>
+        <input type="text" placeholder="Search issue..." id="searchInput" />
+        <button class="btn" onclick="searchReports()">Search</button>
         <a href="#" class="link">Login</a>
         <a href="#" class="link">Report</a>
         <a href="#" class="link">Dashboard</a>
       </div>
     </nav>
 
-    <!-- Lead -->
+    <!-- Hero Section -->
     <section class="lead">
       <h1>Welcome to Action 7</h1>
       <p class="muted">Report problems in your city & track resolutions in real time</p>
-
-      <div class="thumb-row" aria-hidden="false">
+      <div class="thumb-row">
         <figure class="thumb">
-          <img src="https://media.istockphoto.com/id/929942316/photo/old-highway-with-holes-and-snow-landscape-road-potholes-in-cloudy-winter-weather-concept.jpg?s=612x612&w=0&k=20&c=ZtK8wJgXLQYEWGMJVGeyZBqVPKsdHMQlml1Vx8i17aw=" alt="Potholes">
+          <img src="https://media.istockphoto.com/id/929942316/photo/old-highway-with-holes-and-snow-landscape-road-potholes-in-cloudy-winter-weather-concept.jpg?s=612x612&w=0&k=20&c=ZtK8wJgXLQYEWGMJVGeyZBqVPKsdHMQlml1Vx8i17aw=" alt="Road Potholes" />
           <figcaption>Potholes</figcaption>
         </figure>
-
         <figure class="thumb">
-          <img src="https://images.unsplash.com/photo-1631174721289-6656e7f3353c?q=80&w=400&auto=format&fit=crop" alt="Garbage">
+          <img src="https://images.unsplash.com/photo-1631174721289-6656e7f3353c?q=80&w=400&auto=format&fit=crop" alt="Garbage" />
           <figcaption>Garbage</figcaption>
         </figure>
-
         <figure class="thumb">
-          <img src="https://images.unsplash.com/photo-1716827110125-8618350b5835?q=80&w=400&auto=format&fit=crop" alt="Streetlights">
+          <img src="https://images.unsplash.com/photo-1716827110125-8618350b5835?q=80&w=400&auto=format&fit=crop" alt="Streetlight" />
           <figcaption>Streetlights</figcaption>
         </figure>
-
         <figure class="thumb">
-          <img src="https://media.istockphoto.com/id/950679732/photo/discharge-of-sewage-into-a-river.jpg?s=612x612&w=0&k=20&c=yzqTSybAHXdk4q3Z4trus97VjAmx0L8TZ9F95CscSO0=" alt="Drainage">
-          <figcaption>Water / Drainage</figcaption>
+          <img src="https://media.istockphoto.com/id/950679732/photo/discharge-of-sewage-into-a-river.jpg?s=612x612&w=0&k=20&c=yzqTSybAHXdk4q3Z4trus97VjAmx0L8TZ9F95CscSO0=" alt="Drainage" />
+          <figcaption>Water/Drainage</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- Map -->
-    <section class="map-section card">
-      <div class="panel-head">Map (click to set report location)</div>
-      <div id="map" aria-label="Map showing Parul University and reports"></div>
-      <div class="map-note muted">Tip: click on the map to set the report location — this will be used when you submit the form.</div>
+    <section class="map-section">
+      <div id="map"></div>
     </section>
 
-    <!-- Main -->
+    <!-- Main Content -->
     <main class="columns">
-
-      <!-- Left: Report form + Recent -->
       <section>
-        <div class="card panel" id="reportCard">
+        <!-- Report Form -->
+        <div class="card panel">
           <div class="panel-head">Report an Issue</div>
           <div class="form-compact">
             <div class="row">
-              <label for="reporterName" class="muted">Your name</label>
-              <input id="reporterName" type="text" placeholder="e.g., Rahul Sharma" />
+              <input type="text" id="locationInput" placeholder="Enter Location" />
             </div>
-
             <div class="row">
-              <label for="locationInput" class="muted">Location (or click map)</label>
-              <input id="locationInput" type="text" placeholder="e.g., Limda, Ward 5" />
+              <textarea id="descInput" placeholder="Describe the issue..."></textarea>
             </div>
-
             <div class="row">
-              <label for="issueDesc" class="muted">Description</label>
-              <textarea id="issueDesc" placeholder="Describe the issue..."></textarea>
+              <input type="file" id="fileUpload" />
             </div>
-
             <div class="row">
-              <label for="fileUpload" class="muted">Attach file (image / video / doc) — optional</label>
-              <input id="fileUpload" type="file" accept="image/*,video/*,application/pdf,.doc,.docx,.txt" />
+              <input type="text" id="userInput" placeholder="Your Name" />
             </div>
-
-            <div class="row actions">
-              <button class="btn primary" id="submitBtn">Submit Report</button>
-              <button class="btn ghost" id="resetBtn">Reset</button>
+            <div class="actions">
+              <button class="btn primary" onclick="submitReport()">Submit Report</button>
             </div>
           </div>
         </div>
 
+        <!-- Recent Reports -->
         <div class="card panel">
           <div class="panel-head">Recent Reports</div>
-          <div id="recentReports" class="compact-results" aria-live="polite"></div>
+          <div class="compact-results" id="recentReports">
+            <div class="result"><span>No reports yet</span></div>
+          </div>
         </div>
       </section>
 
-      <!-- Right: Chat + Links -->
+      <!-- Right Sidebar -->
       <aside class="rightcol">
         <div class="card panel">
           <div class="panel-head">AI Assistant</div>
-          <div class="chatbox" id="chatbox" aria-live="polite">
-            <p><b>Bot:</b> Hello! Type something and press Enter — I can help you with reporting or tracking.</p>
+          <div class="chatbox" id="chatbox">
+            <p><b>Bot:</b> Hello! I can guide you to report issues or check updates.</p>
           </div>
-          <input type="text" id="chatInput" placeholder="Ask me..." />
+          <input type="text" id="chatInput" placeholder="Ask me..." onkeypress="sendMessage(event)" />
         </div>
 
         <div class="card panel">
@@ -134,15 +118,14 @@
           </ul>
         </div>
       </aside>
-
     </main>
 
-    <!-- Info row -->
+    <!-- Features Row -->
     <section class="info-row">
       <div class="card info small">📍 Location Tracking</div>
-      <div class="card info small">📷 Photo & Video</div>
+      <div class="card info small">📷 Photo Upload</div>
       <div class="card info small">📊 Dashboard</div>
-      <div class="card info small">🕒 Fast Response</div>
+      <div class="card info small">🤖 AI Assistance</div>
     </section>
 
     <!-- Footer -->
@@ -155,9 +138,7 @@
   </div>
 
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- App JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
