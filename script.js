@@ -1,37 +1,29 @@
-// Tab toggles
-const tabs = document.querySelectorAll('.tab');
-const panes = document.querySelectorAll('.tabpane');
-tabs.forEach(t => t.addEventListener('click', () => {
-  tabs.forEach(x => x.classList.remove('active'));
-  panes.forEach(p => p.classList.remove('active'));
-  t.classList.add('active');
-  document.getElementById(t.dataset.tab).classList.add('active');
-  document.getElementById('compactResults').innerHTML = '';
-}));
+function sendMessage(event) {
+  if (event.key === "Enter") {
+    let input = document.getElementById("chatInput");
+    let chatbox = document.getElementById("chatbox");
 
-// In-memory reports + Leaflet init
-let reports = []; let markers = []; let map;
+    let userText = input.value.trim();
+    if (userText === "") return;
 
-document.addEventListener('DOMContentLoaded', () => {
-  // init map - Parul University coords
-  map = L.map('map', {scrollWheelZoom: false}).setView([22.3018, 73.1862], 15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '© OpenStreetMap'
-  }).addTo(map);
+    // User message
+    let userMsg = document.createElement("p");
+    userMsg.innerHTML = "<b>You:</b> " + userText;
+    chatbox.appendChild(userMsg);
 
-  // default marker for Parul University
-  L.marker([22.3018,73.1862]).addTo(map).bindPopup('Parul University (Default)').openPopup();
+    // Bot reply
+    let botMsg = document.createElement("p");
+    if (userText.toLowerCase().includes("report")) {
+      botMsg.innerHTML = "<b>Bot:</b> You can submit a report using the form on the left.";
+    } else if (userText.toLowerCase().includes("status")) {
+      botMsg.innerHTML = "<b>Bot:</b> You can check recent reports below the form.";
+    } else {
+      botMsg.innerHTML = "<b>Bot:</b> I can help you with reporting issues, checking status, or guiding you.";
+    }
+    chatbox.appendChild(botMsg);
 
-  // start bot
-  botNext();
-});
-
-// handle report submit
-function handleReport(e){
-  e.preventDefault();
-  const type = document.getElementById('issueType').value;
-  const area = document.getElementById('area').value;
-  const priority = document.getElementById('priority').value;
-  const date = document.getElementById('date').value || '—';
-
-  const id = 'CIV' + Date.now
+    // Scroll
+    chatbox.scrollTop = chatbox.scrollHeight;
+    input.value = "";
+  }
+}
