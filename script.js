@@ -1,76 +1,37 @@
-/* Dark Theme */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #111;
-  color: #eee;
-  line-height: 1.6;
-}
+// Tab toggles
+const tabs = document.querySelectorAll('.tab');
+const panes = document.querySelectorAll('.tabpane');
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  panes.forEach(p => p.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.tab).classList.add('active');
+  document.getElementById('compactResults').innerHTML = '';
+}));
 
-header {
-  text-align: center;
-  padding: 20px;
-  background: #000;
-  border-bottom: 2px solid #333;
-}
+// In-memory reports + Leaflet init
+let reports = []; let markers = []; let map;
 
-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  color: #4da6ff;
-}
+document.addEventListener('DOMContentLoaded', () => {
+  // init map - Parul University coords
+  map = L.map('map', {scrollWheelZoom: false}).setView([22.3018, 73.1862], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© OpenStreetMap'
+  }).addTo(map);
 
-header p {
-  font-size: 1rem;
-  color: #ccc;
-}
+  // default marker for Parul University
+  L.marker([22.3018,73.1862]).addTo(map).bindPopup('Parul University (Default)').openPopup();
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-}
+  // start bot
+  botNext();
+});
 
-.card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
+// handle report submit
+function handleReport(e){
+  e.preventDefault();
+  const type = document.getElementById('issueType').value;
+  const area = document.getElementById('area').value;
+  const priority = document.getElementById('priority').value;
+  const date = document.getElementById('date').value || '—';
 
-.card:hover {
-  transform: scale(1.03);
-  border-color: #4da6ff;
-}
-
-.card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-.card h3 {
-  margin: 5px 0;
-  color: #4da6ff;
-}
-
-.card p {
-  font-size: 0.9rem;
-  color: #bbb;
-}
-
-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 0.85rem;
-  background: #000;
-  border-top: 2px solid #333;
-  color: #aaa;
-}
+  const id = 'CIV' + Date.now
