@@ -3,181 +3,200 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Civic Reporting — Next Gen</title>
+  <title>Civic Reporting — Parul University (Demo)</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <meta name="description" content="Crowdsourced Civic Issue Reporting — Demo (Vadodara Hackathon 6.0, Team HackCode)">
 </head>
 <body>
-  <!-- Top Header (IRCTC-like) -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <img class="brand-mark" alt="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/OOjs_UI_icon_mapPin-progressive.svg"/>
-      <div class="brand">
-        <div class="brand-title">Civic Reporting</div>
-        <div class="brand-sub">Next Generation e-Reporting</div>
-      </div>
-    </div>
-    <nav class="topbar-nav">
-      <a href="#" class="navlink">Home</a>
-      <a href="#how" class="navlink">How it works</a>
-      <a href="#support" class="navlink">Support</a>
-      <button class="btn btn-outline">Login</button>
-      <button class="btn btn-primary">Register</button>
-    </nav>
-  </header>
+  <div class="page">
 
-  <!-- Notice / ticker -->
-  <div class="notice">
-    <div class="notice-label">Announcements</div>
-    <marquee class="notice-text" behavior="scroll" direction="left" scrollamount="5">
-      System window for maintenance on Sunday 02:00–03:00. | Please report with clear photos for faster resolution. | Parul University pilot zones: Wards 1–7 active.
-    </marquee>
+    <!-- Top simple header (Wikipedia-like minimal) -->
+    <header class="header">
+      <div class="header-left">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/OOjs_UI_icon_mapPin-progressive.svg" class="logo-sm" alt="logo">
+        <div class="site-title">Civic Reporting</div>
+      </div>
+      <div class="header-right">
+        <small>Vadodara Hackathon 6.0 • Parul University</small>
+      </div>
+    </header>
+
+    <!-- Small navigation line like Wikipedia: center search / actions -->
+    <nav class="navline">
+      <div class="nav-center">
+        <input id="globalSearch" placeholder="Search issues, wards or FAQs (demo)..." />
+        <button class="btn" onclick="document.getElementById('globalSearch').focus()">Search</button>
+        <a href="#report" class="link">Report</a>
+        <a href="#track" class="link">Track</a>
+        <a href="#map" class="link">Live Map</a>
+        <a href="#bot" class="link">CivicBot</a>
+      </div>
+    </nav>
+
+    <!-- Main content area: text-first, compact thumbnails -->
+    <main class="main">
+      <section class="lead">
+        <h1>Crowdsourced Civic Issue Reporting & Resolution</h1>
+        <p class="muted">Report potholes, street lights, garbage and water issues. Fast routing, public tracking and accountability.</p>
+
+        <!-- small thumbnails row (like wiki main page small images) -->
+        <div class="thumb-row">
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=400&auto=format&fit=crop" alt="maintenance">
+            <figcaption>Maintenance drives</figcaption>
+          </figure>
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1595259680684-2532f6b0f9d3?q=80&w=400&auto=format&fit=crop" alt="lights">
+            <figcaption>Streetlights</figcaption>
+          </figure>
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=400&auto=format&fit=crop" alt="pothole">
+            <figcaption>Pothole repairs</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Compact two-column: Left content (forms, bot), Right column (map, small graph) -->
+      <section class="columns">
+        <div class="leftcol">
+
+          <!-- Report / Track tabs (compact) -->
+          <div class="panel card">
+            <div class="tabs-compact">
+              <button class="tab active" data-tab="tabReport">Report</button>
+              <button class="tab" data-tab="tabTrack">Track</button>
+            </div>
+
+            <!-- Report form (no long description) -->
+            <form id="tabReport" class="tabpane active form-compact" onsubmit="return handleReport(event)">
+              <div class="row">
+                <label>Issue</label>
+                <select id="issueType" required>
+                  <option value="" disabled selected>Select issue</option>
+                  <option>Pothole</option>
+                  <option>Street Light</option>
+                  <option>Garbage / Waste</option>
+                  <option>Water / Drainage</option>
+                  <option>Encroachment / Block</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="row">
+                <label>Area / Ward</label>
+                <input id="area" required placeholder="e.g., Limda, Ward 5">
+              </div>
+              <div class="row two">
+                <div>
+                  <label>Priority</label>
+                  <select id="priority"><option>Normal</option><option>High</option><option>Critical</option></select>
+                </div>
+                <div>
+                  <label>Date (optional)</label>
+                  <input id="date" type="date">
+                </div>
+              </div>
+              <div class="row">
+                <label>Photo (optional)</label>
+                <input id="photo" type="file" accept="image/*">
+              </div>
+              <div class="row actions">
+                <button class="btn primary" type="submit">Submit Report</button>
+                <button class="btn ghost" type="reset">Clear</button>
+              </div>
+            </form>
+
+            <!-- Track form -->
+            <form id="tabTrack" class="tabpane form-compact" onsubmit="return handleTrack(event)">
+              <div class="row">
+                <label>Issue ID</label>
+                <input id="issueId" placeholder="e.g., CIV123456" required>
+              </div>
+              <div class="row">
+                <label>Phone</label>
+                <input id="phone" placeholder="Registered phone" required>
+              </div>
+              <div class="row actions">
+                <button class="btn primary" type="submit">Check Status</button>
+              </div>
+            </form>
+
+            <div id="compactResults" class="compact-results"></div>
+          </div>
+
+          <!-- AI bot compact panel -->
+          <div class="panel card" id="bot">
+            <div class="panel-head">CivicBot — Quick Guide</div>
+            <div id="chatbox" class="chatbox">
+              <!-- messages appended by JS -->
+            </div>
+            <div class="bot-actions">
+              <button class="btn" onclick="botNext()">Explain next</button>
+              <button class="btn ghost" onclick="botReset()">Reset</button>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="rightcol">
+          <!-- Live small map (compact) -->
+          <div class="panel card" id="mapPanel">
+            <div class="panel-head">Live Map — Parul University (default)</div>
+            <div id="map" style="height:260px;border-radius:8px;overflow:hidden"></div>
+            <small class="muted" style="display:block;margin-top:8px">Markers show submitted demo reports (local only).</small>
+          </div>
+
+          <!-- Tiny graph (small) -->
+          <div class="panel card">
+            <div class="panel-head">Impact Snapshot</div>
+            <img id="miniChart" src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Pothole','Lights','Garbage','Water'],datasets:[{label:'Resolved (%)',data:[85,90,78,70]}]},options:{legend:{display:false},scales:{y:{beginAtZero:true,max:100}}}}" alt="graph" style="width:100%;height:120px;object-fit:contain;border-radius:6px" />
+            <small class="muted">Sample resolution rates</small>
+          </div>
+
+          <!-- Small useful links like wiki style -->
+          <div class="panel card">
+            <div class="panel-head">Quick Links</div>
+            <ul class="links-compact">
+              <li><a href="#how">How it works</a></li>
+              <li><a href="#support">Support / Contact</a></li>
+              <li><a href="#privacy">Privacy</a></li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Minimal 'how it works' row (small cards) -->
+      <section id="how" class="info-row">
+        <div class="info small card">
+          <strong>Step 1</strong>
+          <p class="muted">Report with photo & ward</p>
+        </div>
+        <div class="info small card">
+          <strong>Step 2</strong>
+          <p class="muted">Auto-route to department</p>
+        </div>
+        <div class="info small card">
+          <strong>Step 3</strong>
+          <p class="muted">Track status & SLA</p>
+        </div>
+        <div class="info small card">
+          <strong>Step 4</strong>
+          <p class="muted">Closure & feedback</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer minimal wiki-like -->
+    <footer class="footer" id="support">
+      <div class="footer-inner">
+        <small>Vadodara Hackathon 6.0 — Parul University</small>
+        <small>Made with ❤️ by Team HackCode</small>
+      </div>
+    </footer>
   </div>
 
-  <!-- Main area: Left = big search card, Right = promos (IRCTC layout vibe) -->
-  <main class="container">
-    <section class="grid">
-      <!-- Left: Search / Report card -->
-      <div class="card search-card">
-        <div class="card-head">
-          <div class="tabs">
-            <button class="tab active" data-tab="report">Report Issue</button>
-            <button class="tab" data-tab="track">Track Issue</button>
-          </div>
-        </div>
-
-        <!-- Report tab -->
-        <form id="reportTab" class="form-grid tabpane active" onsubmit="return handleReport(event)">
-          <div class="form-row">
-            <label>Issue Type</label>
-            <select id="issueType" required>
-              <option value="" disabled selected>Select issue</option>
-              <option>Pothole</option>
-              <option>Street Light</option>
-              <option>Garbage / Waste</option>
-              <option>Water / Drainage</option>
-              <option>Encroachment / Block</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <label>Area / Ward</label>
-            <input id="area" type="text" placeholder="e.g., Limda, Ward 5" required />
-          </div>
-
-          <div class="form-row">
-            <label>Landmark</label>
-            <input id="landmark" type="text" placeholder="Near main gate / bus stop (optional)" />
-          </div>
-
-          <div class="form-row">
-            <label>Preferred Visit Date</label>
-            <input id="date" type="date" />
-          </div>
-
-          <div class="form-row">
-            <label>Priority</label>
-            <select id="priority">
-              <option>Normal</option>
-              <option>High</option>
-              <option>Critical</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <label>Photo</label>
-            <input id="photo" type="file" accept="image/*" />
-          </div>
-
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Find Teams</button>
-            <button class="btn btn-ghost" type="reset">Clear</button>
-          </div>
-        </form>
-
-        <!-- Track tab -->
-        <form id="trackTab" class="form-grid tabpane" onsubmit="return handleTrack(event)">
-          <div class="form-row">
-            <label>Issue ID</label>
-            <input id="issueId" type="text" placeholder="Enter Issue ID (e.g., CIV123456)" required />
-          </div>
-          <div class="form-row">
-            <label>Phone</label>
-            <input id="phone" type="tel" placeholder="Registered phone number" required />
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Check Status</button>
-          </div>
-        </form>
-
-        <!-- Search results (below the card header like IRCTC list) -->
-        <div id="results" class="results"></div>
-      </div>
-
-      <!-- Right: Promo / Hero tiles (similar to IRCTC right column) -->
-      <aside class="rightcol">
-        <div class="card promo">
-          <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=1200&auto=format&fit=crop" alt="City maintenance" />
-          <div class="promo-body">
-            <div class="promo-title">Clean City Drive</div>
-            <div class="promo-text">Join the 30-day mission to fix 1,000 civic issues.</div>
-          </div>
-        </div>
-
-        <div class="card promo small">
-          <img src="https://images.unsplash.com/photo-1595259680684-2532f6b0f9d3?q=80&w=1200&auto=format&fit=crop" alt="Street lights" />
-          <div class="promo-body">
-            <div class="promo-title">LED Streetlights</div>
-            <div class="promo-text">Report outages for fast turnarounds.</div>
-          </div>
-        </div>
-
-        <div class="card promo small">
-          <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop" alt="Pothole repair" />
-          <div class="promo-body">
-            <div class="promo-title">Pothole Week</div>
-            <div class="promo-text">City-wide repair blitz — log yours now.</div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- Info blocks (mirrors IRCTC’s clean cards under search) -->
-    <section id="how" class="info-cards">
-      <div class="card mini">
-        <div class="mini-title">Fast</div>
-        <div class="mini-text">3-step reporting. Track live status.</div>
-      </div>
-      <div class="card mini">
-        <div class="mini-title">Transparent</div>
-        <div class="mini-text">SLA timers & public dashboards.</div>
-      </div>
-      <div class="card mini">
-        <div class="mini-title">Coordinated</div>
-        <div class="mini-text">Auto-route to right department.</div>
-      </div>
-      <div class="card mini">
-        <div class="mini-title">Inclusive</div>
-        <div class="mini-text">Multi-language & mobile-friendly.</div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer (simple + partner strip feel) -->
-  <footer class="footer" id="support">
-    <div class="partners">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/P_ictogram_info.svg" alt="Partner 1" />
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Commons-logo.svg" alt="Partner 2" />
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Crystal_Clear_app_ktip.svg" alt="Partner 3" />
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/OOjs_UI_icon_cog.svg" alt="Partner 4" />
-    </div>
-    <div class="legal">
-      <p><strong>Vadodara Hackathon 6.0</strong> • Parul University</p>
-      <p>Made with ❤️ by <strong>Team HackCode</strong>.</p>
-    </div>
-  </footer>
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
