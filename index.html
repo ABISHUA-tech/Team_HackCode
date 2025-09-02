@@ -1,53 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Civic Issue Reporting System</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Civic Reporting — Parul University (Demo)</title>
+  <meta name="description" content="Crowdsourced Civic Issue Reporting — Demo (Vadodara Hackathon 6.0, Team HackCode)">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-  <header>
-    <h1>🏙️ Crowdsourced Civic Issue Reporting & Resolution System</h1>
-    <p>Vadodara Hackathon 6.0 — Parul University</p>
-  </header>
-
-  <main>
-    <section class="grid">
-      <div class="card">
-        <img src="https://media.istockphoto.com/id/929942316/photo/old-highway-with-holes-and-snow-landscape-road-potholes-in-cloudy-winter-weather-concept.jpg?s=612x612&w=0&k=20&c=ZtK8wJgXLQYEWGMJVGeyZBqVPKsdHMQlml1Vx8i17aw=" alt="Potholes">
-        <h3>Pothole / Road Damage</h3>
-        <p>Report potholes and damaged roads for quicker repairs.</p>
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/OOjs_UI_icon_mapPin-progressive.svg" class="logo-sm" alt="logo">
+        <div>
+          <div class="site-title">Civic Reporting</div>
+          <div class="site-sub">Crowdsourced Issue Reporting — Demo</div>
+        </div>
       </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1631174721289-6656e7f3353c?q=80&w=1170&auto=format&fit=crop" alt="Garbage">
-        <h3>Garbage / Waste</h3>
-        <p>Help keep the city clean by reporting garbage issues.</p>
+      <div class="header-right">
+        <small>Vadodara Hackathon 6.0 • Parul University</small>
       </div>
+    </header>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1716827110125-8618350b5835?q=80&w=687&auto=format&fit=crop" alt="Streetlights">
-        <h3>Streetlights / Electricity</h3>
-        <p>Ensure proper lighting and electricity in your area.</p>
+    <!-- Nav small -->
+    <nav class="navline">
+      <div class="nav-center">
+        <input id="globalSearch" placeholder="Search wards, issues or FAQs (demo)..." />
+        <button class="btn" onclick="document.getElementById('globalSearch').focus()">Search</button>
+        <a href="#report" class="link">Report</a>
+        <a href="#map" class="link">Live Map</a>
+        <a href="#bot" class="link">CivicBot</a>
       </div>
+    </nav>
 
-      <div class="card">
-        <img src="https://media.istockphoto.com/id/950679732/photo/discharge-of-sewage-into-a-river.jpg?s=612x612&w=0&k=20&c=yzqTSybAHXdk4q3Z4trus97VjAmx0L8TZ9F95CscSO0=" alt="Water Drainage">
-        <h3>Water / Drainage</h3>
-        <p>Report waterlogging and drainage issues easily.</p>
+    <!-- Lead -->
+    <main class="main">
+      <section class="lead">
+        <h1>Crowdsourced Civic Issue Reporting & Resolution</h1>
+        <p class="muted">Report potholes, street lights, garbage, water issues — track solutions and help keep our city clean.</p>
+
+        <!-- Thumbnails (small) -->
+        <div class="thumb-row" aria-hidden="false">
+          <figure class="thumb">
+            <img src="https://media.istockphoto.com/id/929942316/photo/old-highway-with-holes-and-snow-landscape-road-potholes-in-cloudy-winter-weather-concept.jpg?s=612x612&w=0&k=20&c=ZtK8wJgXLQYEWGMJVGeyZBqVPKsdHMQlml1Vx8i17aw=" alt="Potholes">
+            <figcaption>Potholes / Road Damage</figcaption>
+          </figure>
+
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1631174721289-6656e7f3353c?q=80&w=1170&auto=format&fit=crop" alt="Garbage">
+            <figcaption>Garbage / Waste</figcaption>
+          </figure>
+
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1716827110125-8618350b5835?q=80&w=687&auto=format&fit=crop" alt="Streetlights">
+            <figcaption>Streetlights / Electricity</figcaption>
+          </figure>
+
+          <figure class="thumb">
+            <img src="https://media.istockphoto.com/id/950679732/photo/discharge-of-sewage-into-a-river.jpg?s=612x612&w=0&k=20&c=yzqTSybAHXdk4q3Z4trus97VjAmx0L8TZ9F95CscSO0=" alt="Water Drainage">
+            <figcaption>Water / Drainage</figcaption>
+          </figure>
+
+          <figure class="thumb">
+            <img src="https://images.unsplash.com/photo-1744343932892-d08c6df3f7b5?q=80&w=1170&auto=format&fit=crop" alt="Community Clean">
+            <figcaption>Community / Clean City</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Columns: left form + bot, right map + mini chart -->
+      <section class="columns">
+        <div class="leftcol">
+          <!-- Report/Track compact -->
+          <div class="panel card" id="report">
+            <div class="tabs-compact">
+              <button class="tab active" data-tab="tabReport">Report</button>
+              <button class="tab" data-tab="tabTrack">Track</button>
+            </div>
+
+            <!-- Report form -->
+            <form id="tabReport" class="tabpane active form-compact" onsubmit="return handleReport(event)">
+              <div class="row">
+                <label>Issue</label>
+                <select id="issueType" required>
+                  <option value="" disabled selected>Select issue</option>
+                  <option>Pothole</option>
+                  <option>Street Light</option>
+                  <option>Garbage / Waste</option>
+                  <option>Water / Drainage</option>
+                  <option>Encroachment</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <label>Area / Ward</label>
+                <input id="area" required placeholder="e.g., Limda, Ward 5">
+              </div>
+
+              <div class="row two">
+                <div>
+                  <label>Priority</label>
+                  <select id="priority"><option>Normal</option><option>High</option><option>Critical</option></select>
+                </div>
+                <div>
+                  <label>Date (optional)</label>
+                  <input id="date" type="date">
+                </div>
+              </div>
+
+              <div class="row">
+                <label>Photo (optional)</label>
+                <input id="photo" type="file" accept="image/*">
+              </div>
+
+              <div class="row actions">
+                <button class="btn primary" type="submit">Submit Report</button>
+                <button class="btn ghost" type="reset">Clear</button>
+              </div>
+            </form>
+
+            <!-- Track form -->
+            <form id="tabTrack" class="tabpane form-compact" onsubmit="return handleTrack(event)">
+              <div class="row">
+                <label>Issue ID</label>
+                <input id="issueId" placeholder="e.g., CIV123456" required>
+              </div>
+              <div class="row">
+                <label>Phone</label>
+                <input id="phone" placeholder="Registered phone" required>
+              </div>
+              <div class="row actions">
+                <button class="btn primary" type="submit">Check Status</button>
+              </div>
+            </form>
+
+            <div id="compactResults" class="compact-results" aria-live="polite"></div>
+          </div>
+
+          <!-- CivicBot -->
+          <div class="panel card" id="bot">
+            <div class="panel-head">CivicBot — Quick Guide</div>
+            <div id="chatbox" class="chatbox" aria-live="polite"></div>
+            <div class="bot-actions">
+              <button class="btn" onclick="botNext()">Explain next</button>
+              <button class="btn ghost" onclick="botReset()">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="rightcol">
+          <!-- Map (Leaflet) -->
+          <div class="panel card" id="mapPanel">
+            <div class="panel-head">Live Map — Parul University (Default)</div>
+            <div id="map" style="height:260px;border-radius:8px;overflow:hidden"></div>
+            <small class="muted">Submitted demo reports appear as markers (client-side only).</small>
+          </div>
+
+          <!-- Mini Chart (QuickChart) -->
+          <div class="panel card">
+            <div class="panel-head">Impact Snapshot</div>
+            <img id="miniChart" src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Pothole','Lights','Garbage','Water'],datasets:[{label:'Resolved (%)',data:[85,90,78,70]}]},options:{legend:{display:false},scales:{y:{beginAtZero:true,max:100}}}}" alt="Impact chart" style="width:100%;height:120px;object-fit:contain;border-radius:6px" />
+            <small class="muted">Sample resolution rates</small>
+          </div>
+
+          <!-- Useful links -->
+          <div class="panel card">
+            <div class="panel-head">Quick Links</div>
+            <ul class="links-compact">
+              <li><a href="#how">How it works</a></li>
+              <li><a href="#support">Support / Contact</a></li>
+              <li><a href="#privacy">Privacy</a></li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <!-- How it works -->
+      <section id="how" class="info-row">
+        <div class="info small card"><strong>Step 1</strong><p class="muted">Report with photo & ward</p></div>
+        <div class="info small card"><strong>Step 2</strong><p class="muted">Auto-route to department</p></div>
+        <div class="info small card"><strong>Step 3</strong><p class="muted">Track status & SLA</p></div>
+        <div class="info small card"><strong>Step 4</strong><p class="muted">Closure & feedback</p></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="support">
+      <div class="footer-inner">
+        <small>Vadodara Hackathon 6.0 — Parul University</small>
+        <small>Made with ❤️ by Team HackCode</small>
       </div>
+    </footer>
+  </div>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1744343932892-d08c6df3f7b5?q=80&w=1170&auto=format&fit=crop" alt="Clean City">
-        <h3>Community / Clean City</h3>
-        <p>Join hands to keep our city beautiful and healthy.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>Made with ❤️ by Team HackCode | Vadodara Hackathon 6.0 | Parul University</p>
-  </footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
